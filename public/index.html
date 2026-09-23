@@ -1,60 +1,233 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Cloud Video Player</title>
+<title>Easy Video Player</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#050505;
+color:white;
+min-height:100vh;
+}
+
+.container{
+max-width:520px;
+margin:auto;
+padding:28px 20px;
+}
+
+.logo{
+width:82px;
+height:82px;
+margin:30px auto 18px;
+border-radius:24px;
+background:linear-gradient(145deg,#222,#080808);
+border:1px solid #333;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:38px;
+box-shadow:0 12px 35px #000;
+}
+
+h1{
+text-align:center;
+font-size:27px;
+margin:0;
+}
+
+.subtitle{
+text-align:center;
+color:#999;
+margin:10px 0 30px;
+font-size:14px;
+}
+
+.card{
+background:#111;
+border:1px solid #252525;
+border-radius:20px;
+padding:20px;
+}
+
+label{
+display:block;
+font-size:13px;
+color:#aaa;
+margin-bottom:9px;
+}
+
+input{
+width:100%;
+padding:16px;
+border-radius:13px;
+border:1px solid #333;
+background:#080808;
+color:white;
+outline:none;
+font-size:15px;
+}
+
+input:focus{
+border-color:#777;
+}
+
+button{
+width:100%;
+margin-top:14px;
+padding:16px;
+border:0;
+border-radius:13px;
+background:white;
+color:#050505;
+font-weight:700;
+font-size:16px;
+cursor:pointer;
+}
+
+button:active{
+transform:scale(.98);
+}
+
+.status{
+text-align:center;
+color:#888;
+font-size:13px;
+margin-top:16px;
+}
+
+video{
+width:100%;
+margin-top:20px;
+border-radius:16px;
+background:#000;
+display:none;
+}
+
+.providers{
+display:flex;
+justify-content:center;
+gap:8px;
+flex-wrap:wrap;
+margin-top:22px;
+}
+
+.provider{
+border:1px solid #292929;
+background:#101010;
+color:#aaa;
+padding:8px 12px;
+border-radius:30px;
+font-size:12px;
+}
+
+.footer{
+text-align:center;
+color:#555;
+font-size:11px;
+margin-top:28px;
+}
+</style>
 </head>
 
-<body style="background:#111;color:white;font-family:Arial;padding:20px">
+<body>
 
-<h1>🎬 Cloud Video Player</h1>
+<div class="container">
 
-<input id="link"
+<div class="logo">▶</div>
+
+<h1>Easy Video Player</h1>
+
+<div class="subtitle">
+Watch your cloud videos in one simple player
+</div>
+
+<div class="card">
+
+<label>VIDEO LINK</label>
+
+<input
+id="link"
+type="url"
 placeholder="Paste TeraBox, DiskWala or Flezen link"
-style="width:80%;padding:12px">
+>
 
-<button id="play" style="padding:12px">PLAY</button>
+<button id="play">
+▶ WATCH VIDEO
+</button>
 
-<p id="status">Ready</p>
+<div class="status" id="status">
+Ready
+</div>
 
-<video id="player" controls playsinline
-style="width:100%;max-width:700px;margin-top:20px"></video>
+<video
+id="player"
+controls
+playsinline>
+</video>
+
+</div>
+
+<div class="providers">
+<div class="provider">TeraBox</div>
+<div class="provider">DiskWala</div>
+<div class="provider">Flezen</div>
+</div>
+
+<div class="footer">
+Easy Video Player
+</div>
+
+</div>
 
 <script>
 
 const input = document.getElementById("link");
-const player = document.getElementById("player");
+const button = document.getElementById("play");
 const status = document.getElementById("status");
+const player = document.getElementById("player");
 
-document.getElementById("play").onclick = function () {
+button.onclick = async () => {
 
-    const url = input.value.trim().toLowerCase();
+const url = input.value.trim();
 
-    if (!url) {
-        status.textContent = "Paste a link.";
-        return;
-    }
+if(!url){
+status.textContent = "Paste a video link first.";
+return;
+}
 
-    const allowed =
-        url.includes("terabox.com") ||
-        url.includes("teraboxlink.com") ||
-        url.includes("diskwala.com") ||
-        url.includes("flezen.com");
+const lower = url.toLowerCase();
 
-    if (!allowed) {
-        status.textContent =
-            "Only TeraBox, DiskWala or Flezen links are allowed.";
-        player.removeAttribute("src");
-        player.load();
-        return;
-    }
+const supported =
+lower.includes("terabox.com") ||
+lower.includes("teraboxlink.com") ||
+lower.includes("1024terabox.com") ||
+lower.includes("diskwala.com") ||
+lower.includes("flezen.com");
 
-    status.textContent = "Resolving...";
+if(!supported){
+status.textContent =
+"Only TeraBox, DiskWala or Flezen links are supported.";
+return;
+}
 
-    // Resolver will be connected here next.
-    status.textContent =
-        "Valid link detected. Resolver required.";
+status.textContent = "Preparing video...";
+
+player.style.display = "none";
+
+/*
+Resolver connection will be added here.
+*/
+
+status.textContent =
+"Link detected. Video resolver will be connected next.";
+
 };
 
 </script>
